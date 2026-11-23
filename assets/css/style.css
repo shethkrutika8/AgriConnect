@@ -165,6 +165,7 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   margin-left: var(--sidebar-w);
   flex: 1; display: flex; flex-direction: column;
   min-height: 100vh;
+  min-width: 0; /* allow flex item to shrink below its content width (fixes horizontal overflow) */
   transition: var(--transition);
 }
 .main-content.expanded { margin-left: 72px; }
@@ -188,16 +189,21 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 .topbar-toggle:hover { background: var(--gray-100); color: var(--primary); }
 
-.topbar-breadcrumb { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 13px; }
+.topbar-breadcrumb { display: flex; align-items: center; gap: 6px; color: var(--gray-500); font-size: 13px; min-width: 0; overflow: hidden; white-space: nowrap; }
 .topbar-breadcrumb .current { color: var(--gray-700); font-weight: 600; }
+.topbar-breadcrumb a,
+.topbar-breadcrumb .current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 
-.topbar-spacer { flex: 1; }
+.topbar-spacer { flex: 1; min-width: 8px; }
 
 .topbar-search {
   position: relative;
+  width: 220px;
+  flex: 0 1 220px;
+  min-width: 0;
 }
 .topbar-search input {
-  width: 220px; padding: 8px 12px 8px 36px;
+  width: 100%; padding: 8px 12px 8px 36px;
   border: 1px solid var(--gray-200);
   border-radius: var(--radius);
   font-size: 13px; background: var(--gray-50);
