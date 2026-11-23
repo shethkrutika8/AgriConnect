@@ -51,6 +51,11 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; }
+
+/* Flex/grid children must be allowed to shrink below their content width,
+   otherwise wide content forces the whole page to overflow horizontally */
+.d-flex > *, .card, .stats-grid > *, .grid-2 > *, .grid-3 > *, .grid-4 > *,
+.page-content > * { min-width: 0; }
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
 
 /* ── LAYOUT ── */
