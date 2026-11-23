@@ -209,10 +209,11 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   font-size: 13px; background: var(--gray-50);
   transition: var(--transition);
 }
-.topbar-search input:focus { outline: none; border-color: var(--primary); background: white; width: 280px; }
+.topbar-search:focus-within { flex-basis: 280px; }
+.topbar-search input:focus { outline: none; border-color: var(--primary); background: white; }
 .topbar-search i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 14px; }
 
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
 .topbar-btn {
   width: 36px; height: 36px;
@@ -340,9 +341,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .change.down { color: var(--danger); }
 
 /* ── GRIDS ── */
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 
 /* ── BUTTONS ── */
 .btn {
