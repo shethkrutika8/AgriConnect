@@ -11,7 +11,7 @@ $stmt = $pdo->prepare("
            u_b.id as buyer_id, u_b.name as buyer_name, u_b.email as buyer_email, u_b.phone as buyer_phone,
            u_s.id as seller_id, u_s.name as seller_name, u_s.email as seller_email, u_s.phone as seller_phone,
            f.farm_name, f.location as farm_location,
-           ml.id as listing_id, ml.title as listing_title, ml.type as item_type, ml.unit as listing_unit
+           ml.id as listing_id, ml.title as listing_title, ml.type as item_type, ml.unit as listing_unit, ml.image as image
     FROM orders o
     LEFT JOIN users u_b ON o.buyer_id = u_b.id
     LEFT JOIN users u_s ON o.seller_id = u_s.id
@@ -232,12 +232,17 @@ include '../includes/header.php';
         <tbody>
           <tr>
             <td>
-              <div style="font-weight:700;font-size:15px;"><?= htmlspecialchars($order['listing_title'] ?: 'Agricultural Produce') ?></div>
-              <?php if (!empty($order['listing_id'])): ?>
-              <div class="text-muted text-sm no-print">
-                <a href="../marketplace/view.php?id=<?= $order['listing_id'] ?>" style="color:var(--primary);">View Marketplace Listing #<?= $order['listing_id'] ?></a>
+              <div class="d-flex align-center gap-12">
+                <img src="<?= listingImage($order) ?>" alt="<?= htmlspecialchars($order['listing_title'] ?? 'Item') ?>" class="thumb-40" loading="lazy" width="44" height="44">
+                <div>
+                  <div style="font-weight:700;font-size:15px;"><?= htmlspecialchars($order['listing_title'] ?: 'Agricultural Produce') ?></div>
+                  <?php if (!empty($order['listing_id'])): ?>
+                  <div class="text-muted text-sm no-print">
+                    <a href="../marketplace/view.php?id=<?= $order['listing_id'] ?>" style="color:var(--primary);">View Marketplace Listing #<?= $order['listing_id'] ?></a>
+                  </div>
+                  <?php endif; ?>
+                </div>
               </div>
-              <?php endif; ?>
             </td>
             <td><span class="badge badge-primary"><?= ucfirst($order['item_type'] ?: 'item') ?></span></td>
             <td><?= formatCurrency($order['unit_price'] ?: ($order['total_amount'] / max(1, $order['quantity']))) ?></td>

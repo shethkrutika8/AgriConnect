@@ -817,7 +817,12 @@ include 'includes/header.php';
             <?php else: ?>
               <?php foreach ($featuredProduce as $listing): ?>
               <tr>
-                <td><strong><?= htmlspecialchars($listing['title']) ?></strong></td>
+                <td>
+                  <div class="d-flex align-center gap-10">
+                    <img src="<?= listingImage($listing) ?>" alt="<?= htmlspecialchars($listing['title']) ?>" class="thumb-40" loading="lazy" width="44" height="44">
+                    <strong><?= htmlspecialchars($listing['title']) ?></strong>
+                  </div>
+                </td>
                 <td><?= htmlspecialchars($listing['seller_name'] ?? 'Farmer') ?></td>
                 <td><i class="fas fa-map-marker-alt text-muted"></i> <?= htmlspecialchars($listing['location'] ?: 'Farm Direct') ?></td>
                 <td><strong style="color:var(--primary);"><?= formatCurrency($listing['price']) ?></strong>/<?= htmlspecialchars($listing['unit']) ?></td>

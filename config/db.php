@@ -269,6 +269,13 @@ function updateSetting(string $key, string $value): bool
     }
 }
 
+// Append the file's modification time so browsers refetch an image whenever the file is replaced
+function imgVer(string $absPath): string
+{
+    $t = @filemtime($absPath);
+    return $t ? '?v=' . $t : '';
+}
+
 // Helper: resolve a local image file inside assets/images/{folder} or null if absent
 function resolveImage(string $folder, ?string $file): ?string
 {
@@ -278,7 +285,7 @@ function resolveImage(string $folder, ?string $file): ?string
     if ($file === '')
         return null;
     $abs = dirname(__DIR__) . '/assets/images/' . trim($folder, '/') . '/' . $file;
-    return file_exists($abs) ? BASE_URL . '/assets/images/' . trim($folder, '/') . '/' . $file : null;
+    return file_exists($abs) ? BASE_URL . '/assets/images/' . trim($folder, '/') . '/' . $file . imgVer($abs) : null;
 }
 
 // Helper: pick the first bundled image whose keyword occurs in $haystack (existence-checked across folders)
@@ -291,11 +298,20 @@ function pickImage(array $folders, array $map, string $haystack, string $fallbac
         foreach ($folders as $folder) {
             $abs = dirname(__DIR__) . '/assets/images/' . $folder . '/' . $file;
             if (file_exists($abs)) {
-                return BASE_URL . '/assets/images/' . $folder . '/' . $file;
+                return BASE_URL . '/assets/images/' . $folder . '/' . $file . imgVer($abs);
             }
         }
     }
-    return BASE_URL . '/assets/images/' . $folders[0] . '/' . $fallback;
+    $fbAbs = dirname(__DIR__) . '/assets/images/' . $folders[0] . '/' . $fallback;
+    return BASE_URL . '/assets/images/' . $folders[0] . '/' . $fallback . imgVer($fbAbs);
+}
+
+// Helper: URL for any file under assets/images (cache-busted by filemtime)
+function assetImg(string $relPath): string
+{
+    $relPath = ltrim($relPath, '/');
+    $abs = dirname(__DIR__) . '/assets/images/' . $relPath;
+    return BASE_URL . '/assets/images/' . $relPath . imgVer($abs);
 }
 
 // Helper: image URL for a crop record (falls back to a crop-relevant bundled image)
@@ -308,32 +324,54 @@ function cropImage(array $crop): string
     return pickImage(['crops'], [
         'wheat' => 'wheat.jpg', 'basmati' => 'basmati-rice.jpg', 'rice' => 'basmati-rice.jpg',
         'paddy' => 'basmati-rice.jpg', 'tomato' => 'tomato.jpg', 'potato' => 'potato.jpg',
-        'sugarcane' => 'sugarcane.jpg', 'onion' => 'onion.jpg', 'cotton' => 'cotton.jpg',
+        'sugarcane' => 'sugarcane.jpg', 'onion' => 'onion.jpg', 'cotton' => 'cotton.jpg', 'kapas' => 'cotton.jpg',
         'soybean' => 'soybean.jpg', 'soya' => 'soybean.jpg', 'maize' => 'maize.jpg',
         'pea' => 'green-peas.jpg', 'mango' => 'mango.jpg', 'turmeric' => 'turmeric.jpg',
         'spinach' => 'spinach.jpg', 'gourd' => 'bitter-gourd.jpg', 'corn' => 'sweet-corn.jpg',
     ], ($crop['name'] ?? '') . ' ' . ($crop['variety'] ?? ''), 'default_crop.jpg');
 }
 
+// Helper: resolve a stored image filename against several asset folders (first existing file wins)
+function resolveImageInFolders(array $folders, ?string $file): ?string
+{
+    if (empty($file))
+        return null;
+    $file = basename($file);
+    if ($file === '')
+        return null;
+    foreach ($folders as $folder) {
+        $abs = dirname(__DIR__) . '/assets/images/' . trim($folder, '/') . '/' . $file;
+        if (file_exists($abs)) {
+            return BASE_URL . '/assets/images/' . trim($folder, '/') . '/' . $file . imgVer($abs);
+        }
+    }
+    return null;
+}
+
 // Helper: image URL for a product record
 function productImage(array $product): string
 {
-    $explicit = resolveImage('products', $product['image'] ?? null);
+    $explicit = resolveImageInFolders(['products', 'crops'], $product['image'] ?? null);
     $isDefault = empty($product['image']) || str_starts_with($product['image'], 'default');
     if ($explicit && !$isDefault)
         return $explicit;
     return pickImage(['products', 'crops'], [
-        'maize' => 'maize-seeds.jpg', 'compost' => 'vermicompost.jpg', 'vermi' => 'vermicompost.jpg',
+        'wheat' => 'wheat.jpg', 'basmati' => 'basmati-rice.jpg', 'rice' => 'basmati-rice.jpg',
+        'paddy' => 'basmati-rice.jpg', 'tomato' => 'tomato.jpg', 'potato' => 'potato.jpg',
+        'onion' => 'onion.jpg', 'cotton' => 'cotton.jpg', 'kapas' => 'cotton.jpg',
+        'turmeric' => 'turmeric.jpg', 'mango' => 'mango.jpg', 'maize' => 'maize-seeds.jpg',
+        'corn' => 'sweet-corn.jpg', 'pea' => 'green-peas.jpg', 'gourd' => 'bitter-gourd.jpg',
+        'spinach' => 'spinach.jpg', 'sugarcane' => 'sugarcane.jpg', 'soybean' => 'soybean.jpg',
+        'compost' => 'vermicompost.jpg', 'vermi' => 'vermicompost.jpg',
         'neem' => 'neem-oil.jpg', 'sprayer' => 'hand-sprayer.jpg', 'spray' => 'hand-sprayer.jpg',
-        'spinach' => 'spinach.jpg', 'gourd' => 'bitter-gourd.jpg', 'corn' => 'sweet-corn.jpg',
-        'seed' => 'seeds.jpg',
+        'seed' => 'maize-seeds.jpg',
     ], ($product['name'] ?? '') . ' ' . ($product['description'] ?? ''), 'default_product.jpg');
 }
 
 // Helper: image URL for a marketplace listing
 function listingImage(array $listing): string
 {
-    $explicit = resolveImage('listings', $listing['image'] ?? null);
+    $explicit = resolveImageInFolders(['listings', 'crops', 'products'], $listing['image'] ?? null);
     $isDefault = empty($listing['image']) || str_starts_with($listing['image'], 'default');
     if ($explicit && !$isDefault)
         return $explicit;
@@ -344,7 +382,7 @@ function listingImage(array $listing): string
         'maize' => 'maize-seeds.jpg', 'corn' => 'sweet-corn.jpg', 'pea' => 'green-peas.jpg',
         'mango' => 'mango.jpg', 'turmeric' => 'turmeric.jpg', 'spinach' => 'spinach.jpg',
         'gourd' => 'bitter-gourd.jpg', 'neem' => 'neem-oil.jpg', 'sprayer' => 'hand-sprayer.jpg',
-        'compost' => 'vermicompost.jpg', 'seed' => 'seeds.jpg',
+        'compost' => 'vermicompost.jpg', 'seed' => 'maize-seeds.jpg',
     ], ($listing['title'] ?? '') . ' ' . ($listing['description'] ?? ''), 'default_listing.jpg');
 }
 

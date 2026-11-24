@@ -36,7 +36,8 @@ include '../includes/header.php';
     <!-- Profile Card -->
     <div class="card">
       <div class="card-body" style="text-align:center;padding:32px;">
-        <div class="avatar-initials avatar-xl" style="margin:0 auto 16px;font-size:28px;">
+        <img src="<?= assetImg('crops/default_crop.jpg') ?>" alt="<?= htmlspecialchars($farmer['farm_name'] ?? 'Farm') ?>" class="thumb-56" style="width:72px;height:72px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block;" loading="lazy">
+        <div class="avatar-initials avatar-xl" style="margin:-52px auto 16px;font-size:28px;position:relative;">
           <?= strtoupper(substr($farmer['user_name'],0,1)) ?>
         </div>
         <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;"><?= htmlspecialchars($farmer['farm_name'] ?? 'N/A') ?></h2>
@@ -97,7 +98,12 @@ include '../includes/header.php';
           <?php if(empty($crops)): ?><tr><td colspan="6" class="text-center text-muted" style="padding:24px;">No crops added yet.</td></tr>
           <?php else: foreach($crops as $c): ?>
           <tr>
-            <td><strong><?= htmlspecialchars($c['name']) ?></strong><?php if($c['variety']): ?><br><span class="text-muted text-sm"><?= htmlspecialchars($c['variety']) ?></span><?php endif; ?></td>
+            <td>
+              <div class="d-flex align-center gap-10">
+                <img src="<?= cropImage($c) ?>" alt="<?= htmlspecialchars($c['name']) ?>" class="thumb-40" loading="lazy" width="44" height="44">
+                <div><strong><?= htmlspecialchars($c['name']) ?></strong><?php if($c['variety']): ?><br><span class="text-muted text-sm"><?= htmlspecialchars($c['variety']) ?></span><?php endif; ?></div>
+              </div>
+            </td>
             <td><span class="badge badge-primary"><?= htmlspecialchars($c['season']) ?></span></td>
             <td><strong><?= formatCurrency($c['price']) ?></strong>/<?= $c['unit'] ?></td>
             <td><?= number_format($c['quantity']) ?> <?= $c['unit'] ?></td>

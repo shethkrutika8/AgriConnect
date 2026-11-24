@@ -141,7 +141,6 @@ $active = $active_page ?? '';
     <a href="<?= BASE_URL ?>/auth/logout.php"
        class="nav-item"
        data-label="Logout"
-       data-confirm="Are you sure you want to logout?"
        onclick="return confirm('Are you sure you want to logout?')">
       <i class="fas fa-sign-out-alt"></i>
       <span>Logout</span>
@@ -152,8 +151,8 @@ $active = $active_page ?? '';
   <!-- User Footer -->
   <div class="sidebar-footer">
     <div class="sidebar-user">
-      <img src="<?= BASE_URL ?>/assets/images/avatars/<?= htmlspecialchars($user['avatar']) ?>"
-           onerror="this.src='<?= BASE_URL ?>/assets/images/avatars/default.png'"
+      <img src="<?= avatarImage($user['avatar']) ?>"
+           width="36" height="36"
            alt="<?= htmlspecialchars($user['name']) ?>">
       <div class="user-info">
         <div class="name"><?= htmlspecialchars($user['name']) ?></div>

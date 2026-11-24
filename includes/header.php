@@ -14,8 +14,8 @@ $breadcrumb = $breadcrumb ?? [];
   <meta name="description" content="AgriConnect – Smart Agriculture Management System">
   <title><?= htmlspecialchars($page_title) ?> | AgriConnect</title>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Font Awesome (self-hosted to avoid CDN icon flash) -->
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/fontawesome.min.css">
 
   <!-- Global CSS -->
   <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css">
@@ -106,8 +106,8 @@ $breadcrumb = $breadcrumb ?? [];
       <!-- User Dropdown -->
       <div class="dropdown-wrapper">
         <?php $user = currentUser(); ?>
-        <img src="<?= BASE_URL ?>/assets/images/avatars/<?= htmlspecialchars($user['avatar']) ?>"
-             onerror="this.src='<?= BASE_URL ?>/assets/images/avatars/default.png'"
+        <img src="<?= avatarImage($user['avatar']) ?>"
+             width="36" height="36"
              class="topbar-avatar"
              data-toggle="dropdown" data-target="userDropdown"
              alt="<?= htmlspecialchars($user['name']) ?>">

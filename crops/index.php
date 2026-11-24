@@ -109,7 +109,7 @@ include '../includes/header.php';
           <?php if (empty($crops)): ?>
           <tr><td colspan="10">
             <div class="empty-state">
-              <i class="fas fa-leaf"></i>
+              <img src="<?= assetImg('crops/default_crop.jpg') ?>" alt="No crops" style="width:120px;height:120px;object-fit:cover;border-radius:16px;margin:0 auto 16px;display:block;">
               <h3>No crops found</h3>
               <p>Try adjusting your search filters or add a new crop.</p>
               <a href="add.php" class="btn btn-primary"><i class="fas fa-plus"></i> Add First Crop</a>
@@ -119,8 +119,13 @@ include '../includes/header.php';
           <tr data-searchable>
             <td><input type="checkbox" class="row-check"></td>
             <td>
-              <a href="view.php?id=<?= $crop['id'] ?>" style="font-weight:600;color:var(--primary);"><?= htmlspecialchars($crop['name']) ?></a>
-              <?php if ($crop['variety']): ?><div class="text-muted text-sm"><?= htmlspecialchars($crop['variety']) ?></div><?php endif; ?>
+              <div class="d-flex align-center gap-12">
+                <img src="<?= cropImage($crop) ?>" alt="<?= htmlspecialchars($crop['name']) ?>" class="thumb-40" loading="lazy" width="44" height="44">
+                <div>
+                  <a href="view.php?id=<?= $crop['id'] ?>" style="font-weight:600;color:var(--primary);"><?= htmlspecialchars($crop['name']) ?></a>
+                  <?php if ($crop['variety']): ?><div class="text-muted text-sm"><?= htmlspecialchars($crop['variety']) ?></div><?php endif; ?>
+                </div>
+              </div>
             </td>
             <td><?= htmlspecialchars($crop['category_name'] ?? '—') ?></td>
             <td><?= htmlspecialchars($crop['farm_name'] ?? '—') ?><br><span class="text-muted text-sm"><?= htmlspecialchars($crop['location'] ?? '') ?></span></td>

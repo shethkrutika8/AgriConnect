@@ -147,7 +147,7 @@ include '../includes/header.php';
   <?php if (empty($listings)): ?>
   <div class="card">
     <div class="empty-state" style="padding: 48px;">
-      <i class="fas fa-store-slash" style="font-size: 48px; color: var(--gray-400); margin-bottom: 12px;"></i>
+      <img src="<?= assetImg('listings/default_listing.jpg') ?>" alt="No listings" style="width:120px;height:120px;object-fit:cover;border-radius:16px;margin:0 auto 16px;display:block;">
       <h3>No marketplace listings found</h3>
       <p class="text-muted">Try adjusting your filters or search terms, or create a new listing.</p>
       <div style="margin-top: 16px;">
@@ -158,7 +158,8 @@ include '../includes/header.php';
   <?php else: ?>
   <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;" class="mb-24">
     <?php foreach ($listings as $l): ?>
-    <div class="card" style="display:flex;flex-direction:column;transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shadow-lg)';" onmouseout="this.style.transform='none';this.style.boxShadow='var(--shadow)';">
+    <div class="card" style="display:flex;flex-direction:column;transition:transform 0.2s, box-shadow 0.2s;overflow:hidden;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='var(--shadow-lg)';" onmouseout="this.style.transform='none';this.style.boxShadow='var(--shadow)';">
+      <img src="<?= listingImage($l) ?>" alt="<?= htmlspecialchars($l['title']) ?>" class="img-cover" loading="lazy" width="320" height="180">
       <div class="card-body" style="flex:1;display:flex;flex-direction:column;padding:20px;">
         
         <!-- Header: Type badge & Status -->

@@ -57,13 +57,18 @@ include '../includes/header.php';
         <thead><tr><th><input type="checkbox" id="selectAll"></th><th>Product</th><th>Category</th><th>Farm</th><th>Price</th><th>Qty</th><th>Status</th><th>Actions</th></tr></thead>
         <tbody>
           <?php if(empty($products)): ?>
-          <tr><td colspan="8"><div class="empty-state"><i class="fas fa-box-open"></i><h3>No products found</h3><p>Add a product to get started.</p><a href="add.php" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</a></div></td></tr>
+          <tr><td colspan="8"><div class="empty-state"><img src="<?= assetImg('products/default_product.jpg') ?>" alt="No products" style="width:120px;height:120px;object-fit:cover;border-radius:16px;margin:0 auto 16px;display:block;"><h3>No products found</h3><p>Add a product to get started.</p><a href="add.php" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</a></div></td></tr>
           <?php else: foreach($products as $p): ?>
           <tr data-searchable>
             <td><input type="checkbox" class="row-check"></td>
             <td>
-              <a href="view.php?id=<?= $p['id'] ?>" style="font-weight:600;color:var(--primary);"><?= htmlspecialchars($p['name']) ?></a>
-              <div class="text-muted text-sm"><?= htmlspecialchars(substr($p['description']??'',0,50)) ?><?= strlen($p['description']??'')>50?'…':'' ?></div>
+              <div class="d-flex align-center gap-12">
+                <img src="<?= productImage($p) ?>" alt="<?= htmlspecialchars($p['name']) ?>" class="thumb-40" loading="lazy" width="44" height="44">
+                <div>
+                  <a href="view.php?id=<?= $p['id'] ?>" style="font-weight:600;color:var(--primary);"><?= htmlspecialchars($p['name']) ?></a>
+                  <div class="text-muted text-sm"><?= htmlspecialchars(substr($p['description']??'',0,50)) ?><?= strlen($p['description']??'')>50?'…':'' ?></div>
+                </div>
+              </div>
             </td>
             <td><?= htmlspecialchars($p['cat_name']??'—') ?></td>
             <td><?= htmlspecialchars($p['farm_name']??'—') ?><br><span class="text-muted text-sm"><?= htmlspecialchars($p['location']??'') ?></span></td>

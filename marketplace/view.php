@@ -124,8 +124,10 @@ include '../includes/header.php';
           <span class="badge <?= $sCls ?>"><?= ucfirst($listing['status']) ?></span>
         </div>
       </div>
-      <div class="card-body">
-        
+      <div class="card-body" style="padding:0;">
+        <img src="<?= listingImage($listing) ?>" alt="<?= htmlspecialchars($listing['title']) ?>" class="img-cover-lg" width="640" height="280">
+        <div style="padding:20px;">
+
         <!-- Pricing Banner -->
         <div style="background:linear-gradient(135deg, var(--secondary), var(--primary));color:white;padding:20px;border-radius:var(--radius);margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;">
           <div>
@@ -171,6 +173,7 @@ include '../includes/header.php';
         </div>
         <?php endif; ?>
 
+        </div>
       </div>
     </div>
 

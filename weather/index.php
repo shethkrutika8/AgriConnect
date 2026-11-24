@@ -307,32 +307,44 @@ include '../includes/header.php';
         <div class="card-title"><i class="fas fa-seedling" style="color:var(--primary);margin-right:8px;"></i>Crop Specific Weather Advisory</div>
       </div>
       <div class="card-body" style="display:flex;flex-direction:column;gap:14px;font-size:13px;">
-        <div style="border-left:4px solid var(--primary);padding-left:12px;">
+        <div class="d-flex align-center gap-12" style="border-left:4px solid var(--primary);padding-left:12px;">
+          <img src="<?= BASE_URL ?>/assets/images/crops/wheat.jpg" alt="Wheat" class="thumb-56" loading="lazy" width="56" height="56">
+          <div>
           <div style="font-weight:700;color:var(--gray-900);">🌾 Wheat & Barley (Rabi)</div>
           <p class="text-muted" style="margin-top:2px;">
             Ideal daytime temperature is 18°C–25°C. Keep soil moist during crown root initiation (CRI) and grain filling stages. Watch out for yellow rust if fog and overcast skies persist.
           </p>
+          </div>
         </div>
 
-        <div style="border-left:4px solid var(--info);padding-left:12px;">
+        <div class="d-flex align-center gap-12" style="border-left:4px solid var(--info);padding-left:12px;">
+          <img src="<?= BASE_URL ?>/assets/images/crops/basmati-rice.jpg" alt="Basmati Rice" class="thumb-56" loading="lazy" width="56" height="56">
+          <div>
           <div style="font-weight:700;color:var(--gray-900);">🍚 Basmati & Paddy Rice</div>
           <p class="text-muted" style="margin-top:2px;">
             Ensure standing water of 2–3 cm during tillering stage. Drain fields 10–12 days prior to harvest for uniform ripening and machine access.
           </p>
+          </div>
         </div>
 
-        <div style="border-left:4px solid var(--accent);padding-left:12px;">
+        <div class="d-flex align-center gap-12" style="border-left:4px solid var(--accent);padding-left:12px;">
+          <img src="<?= BASE_URL ?>/assets/images/crops/tomato.jpg" alt="Tomato" class="thumb-56" loading="lazy" width="56" height="56">
+          <div>
           <div style="font-weight:700;color:var(--gray-900);">🍅 Vegetables (Tomato, Chilli, Onion)</div>
           <p class="text-muted" style="margin-top:2px;">
             Drip irrigation is recommended. Avoid overhead sprinkling during flowering to avoid blossom drop and early blight fungal disease.
           </p>
+          </div>
         </div>
 
-        <div style="border-left:4px solid var(--secondary);padding-left:12px;">
+        <div class="d-flex align-center gap-12" style="border-left:4px solid var(--secondary);padding-left:12px;">
+          <img src="<?= BASE_URL ?>/assets/images/crops/cotton.jpg" alt="Cotton" class="thumb-56" loading="lazy" width="56" height="56">
+          <div>
           <div style="font-weight:700;color:var(--gray-900);">🌱 Cotton & Cash Crops</div>
           <p class="text-muted" style="margin-top:2px;">
             Dry sunny weather is beneficial during boll bursting. Avoid irrigation when 50% of the bolls have opened to maintain lint quality.
           </p>
+          </div>
         </div>
       </div>
     </div>

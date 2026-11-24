@@ -62,7 +62,9 @@ include '../includes/header.php';
         <?php $cls = ['active'=>'badge-success','inactive'=>'badge-secondary','out_of_stock'=>'badge-danger'][$product['status']] ?? 'badge-secondary'; ?>
         <span class="badge <?= $cls ?>"><?= str_replace('_', ' ', ucfirst($product['status'])) ?></span>
       </div>
-      <div class="card-body">
+      <div class="card-body" style="padding:0;">
+        <img src="<?= productImage($product) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="img-cover-lg" width="640" height="280">
+        <div style="padding:20px;">
         <div class="grid-2 gap-16 mb-24">
           <div>
             <div class="text-muted text-sm">Product Name</div>
@@ -96,6 +98,7 @@ include '../includes/header.php';
         <div class="d-flex justify-between align-center text-sm text-muted">
           <div>Added on: <strong><?= date('d M Y, h:i A', strtotime($product['created_at'])) ?></strong></div>
           <div>Last updated: <strong><?= timeAgo($product['updated_at'] ?? $product['created_at']) ?></strong></div>
+        </div>
         </div>
       </div>
       <div class="card-footer d-flex justify-between">

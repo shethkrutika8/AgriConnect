@@ -14,7 +14,7 @@ $user = currentUser();
 
 // Fetch active marketplace listings
 $listings = $pdo->query("
-    SELECT ml.id, ml.title, ml.price, ml.quantity, ml.unit, ml.seller_id,
+    SELECT ml.id, ml.title, ml.price, ml.quantity, ml.unit, ml.seller_id, ml.image,
            u.name as seller_name, f.farm_name
     FROM marketplace_listings ml
     JOIN users u ON ml.seller_id = u.id
@@ -129,11 +129,15 @@ include '../includes/header.php';
                     data-price="<?= $l['price'] ?>"
                     data-unit="<?= htmlspecialchars($l['unit']) ?>"
                     data-max="<?= $l['quantity'] ?>"
+                    data-img="<?= listingImage($l) ?>"
                     data-seller="<?= htmlspecialchars($l['farm_name'] ?: $l['seller_name']) ?>">
               <?= htmlspecialchars($l['title']) ?> (₹<?= $l['price'] ?>/<?= $l['unit'] ?> · <?= $l['quantity'] ?> <?= $l['unit'] ?> left)
             </option>
             <?php endforeach; ?>
           </select>
+          <div id="listingPreviewWrap" style="display:none;margin-top:10px;">
+            <img id="listingPreviewImg" src="" alt="Selected item" class="thumb-56" width="56" height="56">
+          </div>
         </div>
 
         <?php if ($user['role'] === 'admin'): ?>
@@ -232,6 +236,9 @@ function onListingChange(select) {
         document.getElementById('unitPriceDisplay').value = '₹ ' + currentPrice.toFixed(2);
         document.getElementById('maxStockNotice').innerText = 'Available stock: ' + currentMax + ' ' + unit;
         document.getElementById('orderQtyInput').max = currentMax;
+        const prevWrap = document.getElementById('listingPreviewWrap');
+        const prevImg  = document.getElementById('listingPreviewImg');
+        if (opt.dataset.img) { prevImg.src = opt.dataset.img; prevWrap.style.display = ''; }
         calculateOrderTotal();
     } else {
         currentPrice = 0;
@@ -240,6 +247,7 @@ function onListingChange(select) {
         document.getElementById('unitPriceDisplay').value = '';
         document.getElementById('maxStockNotice').innerText = '';
         document.getElementById('totalPriceDisplay').value = '';
+        document.getElementById('listingPreviewWrap').style.display = 'none';
     }
 }
 

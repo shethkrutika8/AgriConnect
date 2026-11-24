@@ -62,7 +62,9 @@ include '../includes/header.php';
         <?php $cls = ['available'=>'badge-success','sold_out'=>'badge-danger','coming_soon'=>'badge-warning','inactive'=>'badge-secondary'][$crop['status']] ?? 'badge-secondary'; ?>
         <span class="badge <?= $cls ?>"><?= str_replace('_', ' ', ucfirst($crop['status'])) ?></span>
       </div>
-      <div class="card-body">
+      <div class="card-body" style="padding:0;">
+        <img src="<?= cropImage($crop) ?>" alt="<?= htmlspecialchars($crop['name']) ?>" class="img-cover-lg" width="640" height="280">
+        <div style="padding:20px;">
         <div class="grid-2 gap-16 mb-24">
           <div>
             <div class="text-muted text-sm">Crop Name & Variety</div>
@@ -110,6 +112,7 @@ include '../includes/header.php';
         <div class="d-flex justify-between align-center text-sm text-muted">
           <div>Recorded on: <strong><?= date('d M Y', strtotime($crop['created_at'])) ?></strong></div>
           <div>Last update: <strong><?= timeAgo($crop['updated_at'] ?? $crop['created_at']) ?></strong></div>
+        </div>
         </div>
       </div>
       <div class="card-footer d-flex justify-between">

@@ -62,7 +62,7 @@ $stmt = $pdo->prepare("
     SELECT o.*, 
            u_b.name as buyer_name, u_b.email as buyer_email,
            u_s.name as seller_name, u_s.email as seller_email,
-           ml.title as listing_title, ml.type as item_type, ml.unit as listing_unit
+           ml.title as listing_title, ml.type as item_type, ml.unit as listing_unit, ml.image as image
     FROM orders o
     LEFT JOIN users u_b ON o.buyer_id = u_b.id
     LEFT JOIN users u_s ON o.seller_id = u_s.id
@@ -195,7 +195,7 @@ include '../includes/header.php';
           <tr>
             <td colspan="10">
               <div class="empty-state">
-                <i class="fas fa-shopping-cart"></i>
+                <img src="<?= assetImg('listings/default_listing.jpg') ?>" alt="No orders" style="width:120px;height:120px;object-fit:cover;border-radius:16px;margin:0 auto 16px;display:block;">
                 <h3>No orders found</h3>
                 <p>There are no orders matching your current criteria.</p>
                 <a href="create.php" class="btn btn-primary"><i class="fas fa-plus"></i> Place an Order</a>
@@ -214,8 +214,11 @@ include '../includes/header.php';
               <div class="text-muted text-sm"><?= timeAgo($o['created_at']) ?></div>
             </td>
             <td>
-              <div style="font-weight:600;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                <?= htmlspecialchars($o['listing_title'] ?: 'Agricultural Produce') ?>
+              <div class="d-flex align-center gap-10">
+                <img src="<?= listingImage($o) ?>" alt="<?= htmlspecialchars($o['listing_title'] ?? 'Item') ?>" class="thumb-40" loading="lazy" width="44" height="44">
+                <div style="font-weight:600;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  <?= htmlspecialchars($o['listing_title'] ?: 'Agricultural Produce') ?>
+                </div>
               </div>
             </td>
             <td>
